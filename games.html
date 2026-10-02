@@ -1,0 +1,452 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Boyfriend Day 💗</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  color: #70264d;
+  background: linear-gradient(135deg,#ffe0ef,#f8dfff,#fff0f6);
+  min-height: 100vh;
+}
+header { text-align: center; padding: 40px 15px 25px; }
+h1 { font-size: clamp(2.3rem,7vw,4.5rem); margin: 8px; }
+header p { font-size: 1.05rem; }
+.stats {
+  display: inline-flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center; margin: 15px;
+}
+.pill {
+  background: white; border: 2px solid #ffc0dc;
+  padding: 10px 18px; border-radius: 30px;
+  box-shadow: 0 5px 15px #e78db533;
+}
+main { max-width: 1050px; margin: auto; padding: 10px 16px 50px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 17px;
+}
+.card {
+  background: #fffafd; border: 2px solid #ffd0e5;
+  border-radius: 25px; padding: 22px;
+  box-shadow: 0 10px 25px #bd58931c;
+  text-align: center; transition: .2s;
+}
+.card:hover { transform: translateY(-5px) rotate(-.5deg); }
+.emoji { font-size: 2.8rem; }
+.card h2 { font-size: 1.2rem; }
+.card p { color: #99617f; line-height: 1.5; min-height: 48px; }
+button {
+  border: 0; border-radius: 15px; padding: 12px 17px;
+  background: linear-gradient(135deg,#ff68a8,#bd75ed);
+  color: white; font-weight: bold; font-size: 1rem;
+  cursor: pointer; transition: .15s;
+}
+button:hover { transform: scale(1.04); filter: brightness(1.04); }
+button:active { transform: scale(.97); }
+.secondary { background: #ffe3f0; color: #862b59; }
+#game, #letter {
+  background: #fffafd; border: 2px solid #ffc6df;
+  border-radius: 25px; padding: 22px; margin-top: 22px;
+  text-align: center; box-shadow: 0 10px 25px #bd58931c;
+}
+#game h2 { margin-top: 0; }
+.hidden { display: none !important; }
+.choices {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 10px; margin: 18px 0;
+}
+.choices button { min-width: 105px; }
+.result { font-weight: bold; color: #df4288; margin: 15px 0; }
+.board {
+  display: grid; grid-template-columns: repeat(3,75px);
+  gap: 7px; justify-content: center; margin: 18px;
+}
+.cell {
+  height: 75px; font-size: 2rem;
+  background: #ffe3f0; color: #9b3470;
+}
+.memory {
+  display: grid; grid-template-columns: repeat(4,minmax(48px,75px));
+  gap: 8px; justify-content: center; margin: 20px 0;
+}
+.memory button { height: 65px; font-size: 1.6rem; padding: 5px; }
+.progress {
+  height: 12px; background: #ffe0ee;
+  border-radius: 20px; overflow: hidden; margin: 15px 0;
+}
+#bar { height: 100%; width: 0; background: #ef64a3; transition: .3s; }
+footer { text-align: center; padding: 25px; color: #a05d82; }
+.heartpop {
+  position: fixed; pointer-events: none;
+  animation: float 1s forwards; font-size: 25px;
+}
+@keyframes float {
+  to { transform: translateY(-100px) rotate(30deg); opacity: 0; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div>💌 A LITTLE INTERNET DATE MADE JUST FOR YOU 💌</div>
+  <h1>Happy Boyfriend Day,<br>my favourite human 💗</h1>
+  <p>Eight games, silly challenges, and one very lucky girlfriend.</p>
+  <div class="stats">
+    <div class="pill">💗 Hearts: <b id="score">0</b></div>
+    <div class="pill">🎮 Games: <b id="done">0</b>/8</div>
+  </div>
+</header>
+
+<main>
+  <section class="grid">
+    <article class="card">
+      <div class="emoji">💌</div><h2>01. The Love Quiz</h2>
+      <p>How well do you actually know your girl?</p>
+      <button onclick="start('quiz')">Play quiz 💗</button>
+    </article>
+    <article class="card">
+      <div class="emoji">🧠</div><h2>02. Memory Match</h2>
+      <p>Find all the matching pairs. Don't embarrass yourself!</p>
+      <button onclick="start('memory')">Play memory</button>
+    </article>
+    <article class="card">
+      <div class="emoji">💘</div><h2>03. Catch My Hearts</h2>
+      <p>Catch five hearts before the timer runs out.</p>
+      <button onclick="start('catch')">Catch hearts</button>
+    </article>
+    <article class="card">
+      <div class="emoji">🎁</div><h2>04. Mystery Surprise</h2>
+      <p>Pick an envelope and discover your romantic reward.</p>
+      <button onclick="start('surprise')">Choose a gift</button>
+    </article>
+    <article class="card">
+      <div class="emoji">✊</div><h2>05. Rock, Paper, Kiss</h2>
+      <p>Challenge your girlfriend to a very serious showdown.</p>
+      <button onclick="start('rps')">Challenge me</button>
+    </article>
+    <article class="card">
+      <div class="emoji">⭕</div><h2>06. Tic-Tac-Toe</h2>
+      <p>Can you beat me at this classic little game?</p>
+      <button onclick="start('ttt')">Play X & O</button>
+    </article>
+    <article class="card">
+      <div class="emoji">🤭</div><h2>07. Truth or Dare</h2>
+      <p>Choose a truth or a dare. No backing out, mister!</p>
+      <button onclick="start('truth')">Take a turn</button>
+    </article>
+    <article class="card">
+      <div class="emoji">⚡</div><h2>08. Heartbeat Clicker</h2>
+      <p>Tap as many hearts as possible in ten seconds.</p>
+      <button onclick="start('clicker')">Start tapping</button>
+    </article>
+  </section>
+
+  <section id="game" class="hidden">
+    <button class="secondary" onclick="closeGame()">Close ✕</button>
+    <h2 id="gameTitle">Game</h2>
+    <div id="gameBody"></div>
+  </section>
+
+  <section id="letter">
+    <h2>🔐 One last thing...</h2>
+    <p>Complete all eight games to unlock your secret love letter.</p>
+    <div class="progress"><div id="bar"></div></div>
+    <div id="lockText">Your letter is waiting... 💗</div>
+    <div id="secret" class="hidden">
+      <h2>💌 To my favourite boy</h2>
+      <p>
+        Happy Boyfriend Day, my love! ♡<br><br>
+        Thank you for being my favourite person,
+        my comfort, my happiness, and my partner
+        in all the little adventures of life.<br><br>
+        I hope we keep making silly memories,
+        laughing at our own jokes, annoying each
+        other, and choosing each other every day.<br><br>
+        No game could ever measure how much
+        you mean to me. You're my favourite
+        notification, my safest hug, and my
+        favourite part of every day.<br><br>
+        I love you endlessly. 💗<br><br>
+        — Your girl 💋
+      </p>
+    </div>
+  </section>
+</main>
+<footer>Made with lots of love, just for you ♡</footer>
+
+<script>
+let score = 0;
+let completed = new Set();
+let timer = null;
+const $ = id => document.getElementById(id);
+
+function update() {
+  $("score").textContent = score;
+  $("done").textContent = completed.size;
+  $("bar").style.width = completed.size / 8 * 100 + "%";
+  if (completed.size === 8) {
+    $("lockText").textContent = "Unlocked! Your love letter is ready! 💌";
+    $("secret").classList.remove("hidden");
+  }
+}
+function earn(n=1) {
+  score += n;
+  update();
+}
+function finish(id) {
+  if (!completed.has(id)) {
+    completed.add(id);
+    earn(2);
+  }
+}
+function closeGame() {
+  if (timer) clearInterval(timer);
+  $("game").classList.add("hidden");
+}
+function start(id) {
+  if (timer) clearInterval(timer);
+  $("game").classList.remove("hidden");
+  $("gameBody").innerHTML = "";
+  const titles = {
+    quiz:"💌 The Love Quiz", memory:"🧠 Memory Match",
+    catch:"💘 Catch My Hearts", surprise:"🎁 Mystery Surprise",
+    rps:"✊ Rock, Paper, Kiss", ttt:"⭕ Tic-Tac-Toe",
+    truth:"🤭 Truth or Dare", clicker:"⚡ Heartbeat Clicker"
+  };
+  $("gameTitle").textContent = titles[id];
+  const games = {quiz,memory,catchGame,surprise,rps,ttt,truth,clicker};
+  games[id === "catch" ? "catchGame" : id]();
+  $("game").scrollIntoView({behavior:"smooth"});
+}
+function box(html) {
+  $("gameBody").innerHTML = html;
+}
+
+// 1. LOVE QUIZ
+function quiz() {
+  const questions = [
+    ["What's my ideal date?",["A cosy date together","A maths exam","Sleeping all day"],0],
+    ["What's my favourite thing about us?",["Our memories","Arguing about food","Nothing at all"],0],
+    ["What do I want most?",["Your love and time","A spaceship","A lifetime of homework"],0],
+    ["Who is the cutest couple?",["Us, obviously","Two potatoes","The neighbours"],0]
+  ];
+  let i=0, right=0;
+  function show() {
+    let q=questions[i];
+    box(`<p>Question ${i+1} of ${questions.length}</p>
+      <h3>${q[0]}</h3><div class="choices">
+      ${q[1].map((a,j)=>`<button class="secondary" onclick="quizAnswer(${j})">${a}</button>`).join("")}
+      </div><div class="result" id="qr"></div>`);
+  }
+  window.quizAnswer = n => {
+    if(n===questions[i][2]) { right++; earn(1); }
+    $("qr").textContent = n===questions[i][2] ?
+      "Correct! You know your girl! 🥹" : "Wrong answer, but you're still cute. 😚";
+    i++;
+    if(i<questions.length) setTimeout(show,700);
+    else setTimeout(()=>{
+      box(`<h3>You scored ${right}/${questions.length} 💗</h3>
+        <p>Regardless of the score, you have my heart.</p>
+        <button onclick="finish('quiz')">Claim your hearts</button>`);
+    },750);
+  };
+  show();
+}
+
+// 2. MEMORY MATCH
+function memory() {
+  let symbols=["💗","🌷","🍓","🧸","💗","🌷","🍓","🧸"];
+  symbols.sort(()=>Math.random()-.5);
+  let first=null, locked=false, matches=0;
+  box('<p>Find all four matching pairs!</p><div class="memory" id="mem"></div><div class="result" id="mr"></div>');
+  symbols.forEach((symbol)=>{
+    let b=document.createElement("button");
+    b.className="secondary"; b.textContent="❔";
+    b.onclick=()=>{
+      if(locked||b.dataset.done||b===first) return;
+      b.textContent=symbol;
+      if(!first) { first=b; b.dataset.symbol=symbol; return; }
+      if(first.dataset.symbol===symbol) {
+        b.dataset.done="1"; first.dataset.done="1";
+        matches++; earn(1); first=null;
+        if(matches===4) { $("mr").textContent="You found every pair! 💞"; finish("memory"); }
+      } else {
+        locked=true; let prev=first; first=null;
+        setTimeout(()=>{
+          b.textContent="❔"; prev.textContent="❔"; locked=false;
+        },650);
+      }
+    };
+    $("mem").appendChild(b);
+  });
+}
+
+// 3. CATCH HEARTS
+function catchGame() {
+  let count=0,left=12;
+  box(`<p>Tap the button five times before the timer reaches zero!</p>
+    <h2><span id="caught">0</span>/5 💗</h2>
+    <p>Time left: <b id="time">12</b> seconds</p>
+    <button id="catchBtn">💖 Catch a heart!</button>
+    <div class="result" id="cr"></div>`);
+  $("catchBtn").onclick=()=>{
+    count++; $("caught").textContent=count; earn(1);
+    if(count>=5) {
+      clearInterval(timer);
+      $("cr").textContent="You caught them all! Heart thief! 💘";
+      finish("catch");
+    }
+  };
+  timer=setInterval(()=>{
+    left--; $("time").textContent=left;
+    if(left<=0) {
+      clearInterval(timer);
+      $("catchBtn").disabled=true;
+      if(count<5) $("cr").textContent="Time's up! Your heart is still mine. 💗";
+    }
+  },1000);
+}
+
+// 4. MYSTERY SURPRISE
+function surprise() {
+  let gifts=[
+    "A long, uninterrupted cuddle session 🧸",
+    "You choose the movie and I'll bring snacks 🍿",
+    "A cute date planned just for us 🌷",
+    "A thousand kisses, redeemable anytime 💋"
+  ];
+  box(`<p>Pick one mystery envelope. No peeking!</p>
+    <div class="choices">
+    ${[1,2,3,4].map(n=>`<button onclick="revealGift(${n-1})">💌 Envelope ${n}</button>`).join("")}
+    </div><div class="result" id="gift"></div>`);
+  window.revealGift=n=>{
+    $("gift").textContent=gifts[n];
+    finish("surprise");
+    document.querySelectorAll("#gameBody button").forEach(b=>b.disabled=true);
+  };
+}
+
+// 5. ROCK PAPER SCISSORS
+function rps() {
+  let options=["🪨 Rock","📄 Paper","✂️ Scissors"];
+  box(`<p>Choose your move against me!</p>
+    <div class="choices">${options.map((v,i)=>
+      `<button class="secondary" onclick="playRps(${i})">${v}</button>`).join("")}
+    </div><div class="result" id="rpsResult">Your move, handsome!</div>`);
+  window.playRps=n=>{
+    let c=Math.floor(Math.random()*3);
+    let names=["Rock","Paper","Scissors"];
+    let result=n===c?"It's a tie! Rematch?":
+      (n-c+3)%3===1?"You win! My heart was already yours 💗":
+      "I win this round! Consolation kiss? 💋";
+    $("rpsResult").textContent=`You: ${names[n]} · Me: ${names[c]}. ${result}`;
+    if(n!==c&&(n-c+3)%3===1) finish("rps");
+  };
+}
+
+// 6. TIC TAC TOE
+function ttt() {
+  let board=Array(9).fill("");
+  let ended=false;
+  const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],
+    [1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  box(`<p>You're X, I'm O. Get three in a row!</p>
+    <div class="board" id="board"></div>
+    <div class="result" id="tttResult">Your turn 💞</div>
+    <button class="secondary" onclick="start('ttt')">Restart ↻</button>`);
+  function draw() {
+    $("board").innerHTML="";
+    board.forEach((v,i)=>{
+      let b=document.createElement("button");
+      b.className="cell"; b.textContent=v||"·";
+      b.onclick=()=>{
+        if(ended||board[i]) return;
+        board[i]="X";
+        if(check("X")) return;
+        let empty=board.map((v,j)=>v?null:j).filter(v=>v!==null);
+        if(!empty.length) {
+          ended=true; $("tttResult").textContent="A draw! Still a perfect pair.";
+          finish("ttt"); draw(); return;
+        }
+        board[empty[Math.floor(Math.random()*empty.length)]]="O";
+        check("O"); draw();
+      };
+      $("board").appendChild(b);
+    });
+  }
+  function check(p) {
+    if(wins.some(line=>line.every(i=>board[i]===p))) {
+      ended=true;
+      $("tttResult").textContent=p==="X"?
+        "You beat me! Champion boyfriend! 🏆":"I win! Consolation kiss? 💋";
+      if(p==="X") finish("ttt");
+      return true;
+    }
+    return false;
+  }
+  draw();
+}
+
+// 7. TRUTH OR DARE
+function truth() {
+  const truths=[
+    "What was the first thing you noticed about me?",
+    "Which memory of us makes you smile the most?",
+    "What's one little thing I do that you secretly love?",
+    "If we could travel anywhere together, where would we go?"
+  ];
+  const dares=[
+    "Send me your most ridiculous selfie!",
+    "Give me a dramatic ten-second love confession.",
+    "Invent a silly nickname for us as a duo.",
+    "Describe our relationship using only three emojis."
+  ];
+  box(`<p>Choose your destiny. Complete a prompt to claim the round!</p>
+    <div class="choices">
+      <button onclick="truthPick(0)">💗 Truth</button>
+      <button onclick="truthPick(1)">🔥 Dare</button>
+    </div>
+    <h3 class="result" id="truthResult">Choose wisely, love...</h3>
+    <button class="secondary" onclick="finish('truth')">Done! Claim round ✓</button>`);
+  window.truthPick=t=>{
+    let list=t?dares:truths;
+    $("truthResult").textContent=list[Math.floor(Math.random()*list.length)];
+  };
+}
+
+// 8. HEARTBEAT CLICKER
+function clicker() {
+  let count=0,left=10,running=false;
+  box(`<p>Tap the giant heart as many times as you can in ten seconds!</p>
+    <h2 id="clickCount">0 hearts</h2>
+    <button id="bigHeart" style="font-size:3rem;padding:20px 35px">💖</button>
+    <p id="clickTimer">10 seconds · Tap to start!</p>
+    <div class="result" id="clickResult"></div>`);
+  $("bigHeart").onclick=()=>{
+    if(!running) {
+      running=true;
+      timer=setInterval(()=>{
+        left--; $("clickTimer").textContent=left+" seconds left";
+        if(left<=0) {
+          clearInterval(timer); running=false;
+          $("bigHeart").disabled=true;
+          $("clickResult").textContent=`You collected ${count} hearts! 💘`;
+          if(count>=10) finish("clicker");
+        }
+      },1000);
+    }
+    if(running) {
+      count++; $("clickCount").textContent=count+" hearts";
+      earn(1);
+    }
+  };
+}
+</script>
+</body>
+</html>
